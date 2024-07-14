@@ -13,4 +13,4 @@ Conductivity and ph probes are from AtlasScientific.
   python3 ph_and_conductivity_reading.py
 6. when cycle is complete, CTRL + C to terminate program
   log csv files will be produced
-  naming convention is {sensor_type}_log_{current_time}.csv
+  naming convention is {sensor_type}\_log\_{current_time}.csv
