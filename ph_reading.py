@@ -18,7 +18,7 @@ def generate_filename():
     return filename
 
 def read_ph():
-    """Read pH value from the EZO module."""
+    """Read pH value from the EZO-pH module."""
     ser.write(b'R\r')
     time.sleep(1.5)  # Wait for the reading to complete
     
@@ -83,10 +83,6 @@ def update_graph_live(n):
 
     # Read the CSV file to get the full history
     time_list, ph_list = read_csv(file_path)
-
-    # Limit the display to the most recent 100 entries to keep the plot manageable
-    time_list = time_list[-100:]
-    ph_list = ph_list[-100:]
 
     fig = go.Figure(
         data=[go.Scatter(x=time_list, y=ph_list, mode='lines+markers', name='pH Value')],
