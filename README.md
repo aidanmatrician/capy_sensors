@@ -45,6 +45,7 @@ Conductivity and ph probes are from AtlasScientific.
     b. reattach to the tmux session using the following (replace _mysession_ with your session name):
         tmux attach -t _mysession_
     c. press _Ctrl + C_ to exit out of the python script
+        if you get the message "channel 3: open failed: connect failed: Connection refused", don't worry this is normal. this just means that the 127.0.0.1:8500 url can't connect to the server (since we killed the python process). this will go away if you close the browser tab (leave it open if you want to look at the data).
     d. view your logged csv data in the root of the git repo directory. 
 
 # tmux setup steps / help
