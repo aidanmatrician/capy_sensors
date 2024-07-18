@@ -36,6 +36,16 @@ Conductivity and ph probes are from AtlasScientific.
 
     you can close out of this browser at any time and no data will be lost !
 
+9. detach from the current tmux session by pressing _Ctrl + B_, then _D_.
+
+    this allows the pi to continue the process in the background, even if the ssh connection is lost
+
+10. if you want to end the current testing cycle:
+    a. log back into the pi if needed (step 4)
+    b. reattach to the tmux session using the following (replace _mysession_ with your session name):
+        tmux attach -t _mysession_
+    c. press _Ctrl + C_ to exit out of the python script
+    d. view your logged csv data in the root of the git repo directory. 
 
 # tmux setup steps / help
 screen is a tool used to create sessions that run in the background, so even if connections via ssh are lost, the session / programs run will still continue
