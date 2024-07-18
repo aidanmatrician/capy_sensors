@@ -2,6 +2,7 @@ import serial
 import time
 import csv
 import dash
+import threading
 from dash import dcc, html
 from dash.dependencies import Input, Output
 import plotly.graph_objects as go
@@ -57,9 +58,37 @@ def read_csv(file_path):
         pass
     return time_list, value_list
 
+def record_data(ph_file_path, ec_file_path, interval=3.5):
+    """Continuously read and record sensor data to CSV files."""
+    while True:
+        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        ph_value = read_ph()
+        ec_value = read_ec()
+        
+        if ph_value is not None:
+            with open(ph_file_path, mode='a', newline='') as file:
+                writer = csv.writer(file)
+                if file.tell() == 0:  # Check if the file is empty
+                    writer.writerow(["Time", "pH Value"])  # Write the header
+                writer.writerow([current_time, ph_value])
+        
+        if ec_value is not None:
+            with open(ec_file_path, mode='a', newline='') as file:
+                writer = csv.writer(file)
+                if file.tell() == 0:  # Check if the file is empty
+                    writer.writerow(["Time", "EC Value"])  # Write the header
+                writer.writerow([current_time, ec_value])
+
+        time.sleep(interval)
+
 # Generate unique filenames for the new log files
 ph_file_path = generate_filename('ph')
 ec_file_path = generate_filename('ec')
+
+# Start the background thread to record sensor data
+data_recording_thread = threading.Thread(target=record_data, args=(ph_file_path, ec_file_path))
+data_recording_thread.daemon = True
+data_recording_thread.start()
 
 # Initialize the Dash app
 app = dash.Dash(__name__)
@@ -80,24 +109,6 @@ app.layout = html.Div([
     [Input('interval-component', 'n_intervals')]
 )
 def update_graph_live(n):
-    start_time = time.time()  # Record the start time
-
-    ph_value = read_ph()
-    ec_value = read_ec()
-    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    if ph_value is not None:
-        with open(ph_file_path, mode='a', newline='') as file:
-            writer = csv.writer(file)
-            if file.tell() == 0:  # Check if the file is empty
-                writer.writerow(["Time", "pH Value"])  # Write the header
-            writer.writerow([current_time, ph_value])
-    if ec_value is not None:
-        with open(ec_file_path, mode='a', newline='') as file:
-            writer = csv.writer(file)
-            if file.tell() == 0:  # Check if the file is empty
-                writer.writerow(["Time", "EC Value"])  # Write the header
-            writer.writerow([current_time, ec_value])
-
     # Read the CSV files to get the full history
     ph_time_list, ph_value_list = read_csv(ph_file_path)
     ec_time_list, ec_value_list = read_csv(ec_file_path)
@@ -119,10 +130,6 @@ def update_graph_live(n):
             yaxis_title="EC (μS/cm)"
         )
     )
-
-    end_time = time.time()  # Record the end time
-    elapsed_time = end_time - start_time
-    print(f"Time elapsed for this interval: {elapsed_time:.2f} seconds")
 
     return ph_fig, ec_fig
 
