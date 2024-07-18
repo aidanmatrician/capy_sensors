@@ -20,9 +20,9 @@ Conductivity and ph probes are from AtlasScientific.
 
     python3 conductivity_calibration.py
 
-6. start a new screen session by typing the following in the command line:
+6. start a new background session by typing the following in the command line, replacing _mysession_ with your desired session name (arbitrary):
 
-    screen
+    tmux new -s mysession
 
 7. run the reading scripts for ph and conductivity
 
@@ -33,40 +33,37 @@ Conductivity and ph probes are from AtlasScientific.
     naming convention is {sensor_type}\_log\_{current_time}.csv
 
 
-# screen setup steps / help
+# tmux setup steps / help
 screen is a tool used to create sessions that run in the background, so even if connections via ssh are lost, the session / programs run will still continue
 
-1. start a new screen session by typing the following in the command line:
+1. start a new background session by typing the following in the command line, replacing _mysession_ with your desired session name (arbitrary):
   
-    screen
+    tmux new -s mysession
 
-2. to detach from the "screen session", press _Ctrl + A_, then _D_
 
-    this will let you access the "main" session, and not interfere with the "screen session"
+2. to detach from the "mysession", press _Ctrl + B_, then _D_
+
+    this will let you access the "main" session, and not interfere with the "mysession"
 
 3. to reattach to the "screen session" if detached, type the following in the command line:
 
-    screen -r
+    tmux attach -t mysession
 
-4. to list all running "screen sessions", type:
 
-    screen -ls
+4. to list all running "tmux sessions", type:
 
-  the output should look something like this:
+    tmux ls
 
-    There are screens on:
-      1234.pts-0.yourhostname (Attached)
-      5678.pts-1.yourhostname (Detached)
-    2 Sockets in /run/screen/S-yourusername.
+5. to terminate a specific screen session, use the following, replacing _mysession_ with the name of the session:
 
-5. to terminate a specific screen session, use the following, replacing _pid_ with the process id of the screen you want to remove:
+    tmux kill-session -t mysession
 
-    screen -X -S _pid_ quit
-
-    for example, if we wanted to terminate the first screen, we would type the command:
-
-    screen -X -S 1234 quit
 
     to verify the session has been terminated, type:
   
-      screen -ls
+      tmux -ls
+
+6. to kill all tmux sessions, use:
+
+    tmux kill-server
+
