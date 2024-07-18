@@ -32,6 +32,10 @@ Conductivity and ph probes are from AtlasScientific.
 
     naming convention is {sensor_type}\_log\_{current_time}.csv
 
+8. to view the dashboard, go into your browser and navigate to 127.0.0.1:8050
+
+    you can close out of this browser at any time and no data will be lost !
+
 
 # tmux setup steps / help
 screen is a tool used to create sessions that run in the background, so even if connections via ssh are lost, the session / programs run will still continue
