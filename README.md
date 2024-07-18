@@ -20,7 +20,7 @@ Conductivity and ph probes are from AtlasScientific.
 
     python3 conductivity_calibration.py
 
-6. start a new background session by typing the following in the command line, replacing _mysession_ with your desired session name (arbitrary):
+6. start a new background session by typing the following in the command line, replacing _mysession_ with your desired session name (name is arbitrary):
 
     tmux new -s mysession
 
